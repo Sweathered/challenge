@@ -1,18 +1,25 @@
+.button {
+    width: 50px;
+    height: 30px;
+    padding: 5px;
+}
+
 .entry {
     display: block;
-    width: 500px;
-    height: 100px;
-    padding: 2rem;
+    width: 200px;
+    height: 20px;
+    padding: 20px;
     margin-bottom: 2rem;
     border: thin solid #ddd;
 }
 
 .dependents {
     display: block;
+    float: left;
     width: 700px;
     padding: 2rem;
     margin-bottom: 2rem;
-    border: thin solid #ddd;
+    /*border: thin solid #ddd;*/
 }
 
 .employeeList {
