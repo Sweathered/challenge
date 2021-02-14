@@ -1,9 +1,14 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+*.xml
+/challenge-ui/.idea/*
+/challenge-ui/.idea/inspectionProfiles/Project_Default.xml
+
 # dependencies
-/node_modules
+/challenge-ui/node_modules
 /.pnp
 .pnp.js
+.idea
 
 # testing
 /coverage
@@ -21,3 +26,29 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
