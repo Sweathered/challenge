@@ -1,33 +1,24 @@
 import Dependent from "./Dependent";
 import * as React from "react";
 import testData from "../testData";
-import EmployeeInSideBar from "./EmployeeInSideBar"
 import '../App.css';
-import testData2 from "../testData2";
+import Sidebar from "./Sidebar";
 
 class App extends React.Component {
-//[currentEmployee, setCurrentEmployee] = React.useState(testEmployees[0]);
 
     constructor(props) {
         super(props);
         this.state = {
             employees: testData,
-            currentEmployeeIndex: 0
+            currentEmployeeIndex: 0,
+            currentEmployee: testData[0]
         }
 
-        this.handleEmployeeInSidebarClick = this.handleEmployeeInSidebarClick.bind(this);
         this.handleSaveClick = this.handleSaveClick.bind(this);
-        this.handleChange = this.handleChange.bind(this);
+        this.handleCurrentEmployeeNameChange = this.handleCurrentEmployeeNameChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleAddEmployeeClick = this.handleAddEmployeeClick.bind(this);
-    }
 
-    // onEmployeeInSideBarClick = (employee) => {
-    //     console.log("Employee button was clicked");
-    //     let newCurrentEmployee = findEmployeeById(employee.id);
-    //     console.log("New current employee: " + newCurrentEmployee.name);
-    //     setCurrentEmployee(newCurrentEmployee);
-    // }
+    }
 
     findEmployeeById = (id) => {
         return this.state.employees.find(x => x.id === id);
@@ -37,23 +28,19 @@ class App extends React.Component {
         return this.state.employees.findIndex(x => x.id === id);
     }
 
-    handleEmployeeInSidebarClick(props) {
-        const currentEmployeeIndex = this.findEmployeeIndex(props.id);
-
-        this.setState(state => ({
-            currentEmployeeIndex: currentEmployeeIndex
-        }));
-    }
 
     handleSaveClick() {
         console.log("save clicked");
     }
 
-    handleChange(event) {
-        // this.setState({currentEmployeeIndex: event.target.value})
-        this.setState({employees[currentEmployeeIndex].name : event.target.value})
+    handleCurrentEmployeeNameChange = event => {
+        const employees = [...this.state.employees];
+        const employee = this.state.employees[this.state.currentEmployeeIndex];
+        const index = employees.indexOf(employee)
+        employee.name = event.target.value;
+        employees[index] = employee;
+        this.setState({employees})
     }
-
 
     handleDependentChange() {
         console.log("Dependent updated: ");
@@ -76,49 +63,17 @@ class App extends React.Component {
     }
 
 
-    handleAddEmployeeClick() {
-        console.log("handle Employee clicked");
-
-        let newId = this.getHighestId() + 1;
-
-        this.setState(state => ({
-            employees: [...state.employees,
-                {
-                    name: "New Employee",
-                    id: newId,
-                    dependents: []
-                }
-            ]
-        }));
-    }
-
-    // handleClick() {    this.setState(state => ({      isToggleOn: !state.isToggleOn    }));  }
-
     render() {
         return (
             <div className="Wrapper">
-                <div className="employeeList">
-                    <div>
-                        {this.state.employees.map(employee =>
-                            <EmployeeInSideBar onClick={this.handleEmployeeInSidebarClick}
-                                               key={employee.id}
-                                               employee={employee}/>
-                        )}
-                    </div>
-
-                </div>
-
-
-                <button className="button" onClick={this.handleAddEmployeeClick}>
-                    Add Employee
-                </button>
+                <Sidebar/>
 
                 <div className="employeeDetails">
                     <form onSubmit={this.handleSubmit}>
                         <div className="employeeDetail">
                             <div className="entry">
                                 <input type="text" value={this.state.employees[this.state.currentEmployeeIndex].name}
-                                       onChange={this.handleChange}/>
+                                       onChange={this.handleCurrentEmployeeNameChange}/>
                             </div>
 
                             Dependents
@@ -142,14 +97,3 @@ class App extends React.Component {
 }
 
 export default App;
-
-
-// EmployeeInSideBar = props => (
-//
-// <div>
-//     // <a href="#"
-
-//            onClick={() => props.onClick(props.employee)}
-//         > {props.employee.name}</a>
-//     </div>
-// )
