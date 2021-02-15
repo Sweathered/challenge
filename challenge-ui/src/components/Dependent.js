@@ -9,10 +9,15 @@ class Dependent extends React.Component {
         }
 
         this.handleChange = this.handleChange.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
     }
 
     handleChange(e) {
-        this.props.onChange(e.target.value);
+        this.props.onChange(e.target.value, this.props.id);
+    }
+
+    handleDelete(e) {
+        this.props.onDelete(this.props.id);
     }
 
     render() {
@@ -22,6 +27,11 @@ class Dependent extends React.Component {
                 <input type="text"
                        value={this.props.name}
                        onChange={this.handleChange}/>
+                <button className="button"
+                        value={this.props.name}
+                        onClick={this.handleDelete}>
+                    delete
+                </button>
             </div>
         );
     }
