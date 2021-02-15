@@ -1,4 +1,12 @@
 package com.challenge.models;
 
-public class Employees {
+import lombok.Data;
+
+import java.util.List;
+
+@Data
+public class Employee {
+    private String name;
+    private int id;
+    private List<Dependent> dependents;
 }
