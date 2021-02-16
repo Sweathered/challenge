@@ -6,8 +6,8 @@ import java.util.List;
 
 @Data
 public class Costs {
-    public int annualTotalEmployeeSalaryCost;
-    public int annualTotalEmployeeDeductions;
-    public int annualRemainingEmployeeSalary;
+    private int annualTotalEmployeeSalaryCost;
+    private int annualTotalEmployeeDeductions;
+    private int annualRemainingEmployeeSalary;
     private List<CostPerEmployee> costsPerEmployee;
 }

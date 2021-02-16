@@ -9,7 +9,8 @@ import java.util.List;
 public class Employee extends Benefitable {
 //    private String name;
 //    private int id;
-    private List<Dependent> dependents;
+
+
 
     @Override
     public int getDeduction() {

@@ -1,10 +1,10 @@
 package com.challenge.service;
 
+import com.challenge.models.Employee;
 import com.challenge.models.costs.Benefitable;
 import com.challenge.models.costs.CostPerEmployee;
 import com.challenge.models.costs.Costs;
-import com.challenge.models.Dependent;
-import com.challenge.models.Employee;
+import com.challenge.models.costs.NameStartsWithADecorator;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,24 +27,33 @@ public class CostService {
 
         int annualTotalEmployeeDeductions = 0;
         for (Benefitable employee : employees) {
-            CostPerEmployee costPerEmployee = new CostPerEmployee();
-            costPerEmployee.setName(employee.getName());
             if (employee.getName().toUpperCase().startsWith("A")) {
-                costPerEmployee.addToAnnualTotalEmployeeDeductions(900);
-            } else {
-                costPerEmployee.addToAnnualTotalEmployeeDeductions(1000);
+                employee = new NameStartsWithADecorator(employee);
             }
-            for (Dependent dependent : employee.getDependents()) {
+
+            employee.addToAnnualTotalEmployeeDeductions(employee.getDeduction());
+
+            //TODO handle dependents
+            for (Benefitable dependent : employee.getDependents()) {
                 if (dependent.getName().toUpperCase().startsWith("A")) {
-                    costPerEmployee.addToAnnualTotalEmployeeDeductions(450);
-                } else {
-                    costPerEmployee.addToAnnualTotalEmployeeDeductions(500);
+                    dependent = new NameStartsWithADecorator(dependent);
                 }
+                employee.addToAnnualTotalEmployeeDeductions(dependent.getDeduction());
             }
-            costsPerEmployee.add(costPerEmployee);
+
+//            CostPerEmployee costPerEmployee = new CostPerEmployee();
+//            costPerEmployee.setName(employee.getName());
+//            costPerEmployee.setAnnualTotalEmployeeDeductions(employee.getDeduction());
+//            if (employee.getName().toUpperCase().startsWith("A")) {
+//                costPerEmployee.addToAnnualTotalEmployeeDeductions(900);
+//            } else {
+//                costPerEmployee.addToAnnualTotalEmployeeDeductions(1000);
+//            }
+
+
         }
 
-        annualTotalEmployeeDeductions = costsPerEmployee.stream().mapToInt(CostPerEmployee::getAnnualTotalEmployeeDeductions).sum();
+        annualTotalEmployeeDeductions = employees.stream().mapToInt(Employee::getAnnualTotalEmployeeDeductions).sum();
 
         int annualTotalEmployeeSalaryCost = employees.size() * EMPLOYEE_PAYCHECK_AMOUNT * PAYCHECKS_IN_YEAR;
 
