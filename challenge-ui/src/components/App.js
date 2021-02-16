@@ -1,26 +1,57 @@
 import Dependent from "./Dependent";
 import * as React from "react";
-import testData from "../testData";
 import '../App.css';
 import Sidebar from "./Sidebar";
 
 class App extends React.Component {
 
+
     constructor(props) {
         super(props);
+
         this.state = {
-            employees: testData,
-            currentEmployeeIndex: 0
+            employees: [],
+            currentEmployeeIndex: 0,
+            isLoading: true,
+            showEditEmployees: true,
+            costs: {
+                annualTotalEmployeeSalaryCost: 0,
+                annualTotalEmployeeDeductions: 0,
+                annualRemainingEmployeeSalary: 0
+            }
         }
 
         this.handleSaveClick = this.handleSaveClick.bind(this);
         this.handleCurrentEmployeeNameChange = this.handleCurrentEmployeeNameChange.bind(this);
+        this.handleCalculateClick = this.handleCalculateClick.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleAddEmployeeClick = this.handleAddEmployeeClick.bind(this);
         this.handleEmployeeInSidebarClick = this.handleEmployeeInSidebarClick.bind(this);
         this.handleAddDependentClick = this.handleAddDependentClick.bind(this);
         this.handleDeleteDependentClick = this.handleDeleteDependentClick.bind(this);
         this.handleDeleteEmployeeClick = this.handleDeleteEmployeeClick.bind(this);
+        this.toggleShowEditEmployees = this.toggleShowEditEmployees.bind(this);
+    }
+
+    toggleShowEditEmployees() {
+        this.setState({
+            showEditEmployees: false
+        })
+    }
+
+    componentDidMount() {
+        let employeeDataFromAPI = [];
+
+        fetch('http://localhost:8080/employees')
+            .then(response => response.json())
+            .then((data) => {
+                employeeDataFromAPI = data;
+                this.setState({
+                    employees: employeeDataFromAPI,
+                    isLoading: false
+                })
+            })
+            .catch(console.log)
     }
 
     findEmployeeById(id) {
@@ -32,7 +63,6 @@ class App extends React.Component {
         return this.state.employees.findIndex(x => x.id === id);
     }
 
-
     handleCurrentEmployeeNameChange = event => {
         const employees = [...this.state.employees];
         const employee = this.state.employees[this.state.currentEmployeeIndex];
@@ -41,7 +71,6 @@ class App extends React.Component {
         employees[index] = employee;
         this.setState({employees})
     }
-
 
     handleSubmit(event) {
         alert('An employee update was submitted' + this.state.currentEmployeeIndex);
@@ -130,7 +159,6 @@ class App extends React.Component {
         } else {
             alert("Cannot delete last employee");
         }
-
     }
 
     //Sidebar functions
@@ -162,19 +190,65 @@ class App extends React.Component {
         }));
     }
 
-
     handleCalculateClick() {
-        alert("calculate clicked");
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': true
+            },
+            body: JSON.stringify(this.state.employees)
+        }
+        fetch('http://localhost:8080/costs', requestOptions)
+            .then(response => response.json())
+            .then((data) => {
+                this.setState({
+                    costs: data
+                })
+            })
+            .catch(console.log)
     }
 
     handleSaveClick() {
-        alert("save clicked");
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': true
+            },
+            body: JSON.stringify(this.state.employees)
+        }
+        fetch('http://localhost:8080/employees', requestOptions)
+            .then(response => {
+                if (response.status === 200) {
+                    alert("Employees saved!")
+                } else {
+                    alert("Employee save failed :(")
+                }
+            })
+            .catch(console.log)
     }
 
 
     render() {
+        if (this.state.isLoading) {
+            return <div>Loading... Please Wait</div>
+        }
+
+        if (this.state.showEditEmployees) {
+
+        }
+
         return (
-            <div className="Wrapper">
+            <div className="wrapper">
+                <div className="header">
+                    <button className="largeButton" type="submit" onClick={this.toggleShowEditEmployees}>
+                        Edit Employees
+                    </button>
+                    <button className="largeButton" type="submit" onClick={this.handleCalculateClick}>
+                        Calculate Costs
+                    </button>
+                </div>
                 <Sidebar employees={this.state.employees}
                          handleAddEmployeeClick={this.handleAddEmployeeClick}
                          handleEmployeeInSidebarClick={this.handleEmployeeInSidebarClick}
@@ -186,7 +260,8 @@ class App extends React.Component {
 
                     <div className="employeeDetail">
                         <div className="entry">
-                            <input type="text" value={this.state.employees[this.state.currentEmployeeIndex].name}
+                            <input type="text"
+                                   value={this.state.employees[this.state.currentEmployeeIndex].name}
                                    onChange={this.handleCurrentEmployeeNameChange}/>
                             <button className="button"
                                     onClick={this.handleDeleteEmployeeClick}>
@@ -208,11 +283,20 @@ class App extends React.Component {
                         <button className="largeButton" type="submit"
                                 onClick={this.handleAddDependentClick}>Add Dependent
                         </button>
-
-
                     </div>
 
                 </div>
+
+                <div>
+                    Annual Total Employee Salary Cost: {this.state.costs.annualTotalEmployeeSalaryCost}
+                </div>
+                <div>
+                    Annual Total Employee Deductions: {this.state.costs.annualTotalEmployeeDeductions}
+                </div>
+                <div>
+                    Annual Remaining Employee Salary: {this.state.costs.annualRemainingEmployeeSalary}
+                </div>
+
             </div>
         )
     }

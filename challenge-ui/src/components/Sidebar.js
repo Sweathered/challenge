@@ -9,7 +9,7 @@ class Sidebar extends React.Component {
         this.handleEmployeeInSidebarClick = this.handleEmployeeInSidebarClick.bind(this);
         this.handleAddEmployeeClick = this.handleAddEmployeeClick.bind(this);
         this.handleSaveClick = this.handleSaveClick.bind(this);
-        this.handleCalculateClick = this.handleCalculateClick.bind(this);
+        // this.handleCalculateClick = this.handleCalculateClick.bind(this);
     }
 
     handleEmployeeInSidebarClick(props) {
@@ -24,9 +24,9 @@ class Sidebar extends React.Component {
         this.props.handleSaveClick()
     }
 
-    handleCalculateClick() {
-        this.props.handleCalculateClick()
-    }
+    // handleCalculateClick() {
+    //     this.props.handleCalculateClick()
+    // }
 
     render() {
         return (
@@ -46,9 +46,9 @@ class Sidebar extends React.Component {
                     Save Employees
                 </button>
 
-                <button className="largeButton" type="submit" onClick={this.handleCalculateClick}>
-                    Calculate Costs
-                </button>
+                {/*<button className="largeButton" type="submit" onClick={this.handleCalculateClick}>*/}
+                {/*    Calculate Costs*/}
+                {/*</button>*/}
 
             </div>
         );
