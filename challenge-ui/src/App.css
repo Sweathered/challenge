@@ -1,3 +1,23 @@
+.innerWrapper {
+    display: flex;
+    height: 1200px;
+}
+
+.sidebar {
+    align-items: stretch;
+}
+
+.outerWrapper {
+    text-align: center;
+}
+
+.employeeList {
+    width: 250px;
+    padding-top: 40px;
+    background-color: #fbfbfb;
+    border: thin solid #ddd;
+}
+
 .button {
     width: 50px;
     height: 30px;
@@ -8,6 +28,7 @@
     width: 150px;
     height: 30px;
     padding: 5px;
+    margin: 10px;
 }
 
 .entry {
@@ -28,25 +49,17 @@
     border: thin solid #ddd;
 }
 
-.employeeList {
-    height: 100%;
-    width: 150px;
-    position: absolute;
-    left: 0;
-    top: 0;
-    padding-top: 40px;
+.employeeDetails {
+    text-align: left;
+    height: 1200px;
+    /*margin-left: 200px;*/
+    /*position: absolute;*/
+    flex: 100%;
     background-color: #fbfbfb;
 }
 
-.employeeDetails {
-    text-align: left;
-    margin-left: 150px;
-}
-
-
 .employeeDetail {
     border: thin solid #ddd;
-    /*background-color: blue;*/
     background-color: #fbfbfb;
     width: 100%;
     padding: 2rem;
@@ -56,14 +69,24 @@
     justify-content: center;
 }
 
-.wrapper {
+.header {
+    background-color: #BAD8E8;
+    height: 30px;
+    width: 100%;
     text-align: center;
+    vertical-align: center;
+    padding: 30px;
 }
 
-.header {
-    background-color: lightskyblue;
-    height: 100px;
-    width: 100%;
+.costSummaryWrapper {
+    background-color: #fbfbfb;
+    height: 1200px;
+    text-align: center;
+    padding: 100px;
+}
+
+.summaryText {
+    margin: 10px;
 }
 
 /*pre-existing*/

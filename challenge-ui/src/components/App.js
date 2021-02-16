@@ -2,10 +2,10 @@ import Dependent from "./Dependent";
 import * as React from "react";
 import '../App.css';
 import Sidebar from "./Sidebar";
+import Header from "./Header";
+import NumberFormat from 'react-number-format'
 
 class App extends React.Component {
-
-
     constructor(props) {
         super(props);
 
@@ -17,25 +17,26 @@ class App extends React.Component {
             costs: {
                 annualTotalEmployeeSalaryCost: 0,
                 annualTotalEmployeeDeductions: 0,
-                annualRemainingEmployeeSalary: 0
+                annualRemainingEmployeeSalary: 0,
+                costsPerEmployee: []
             }
         }
 
         this.handleSaveClick = this.handleSaveClick.bind(this);
         this.handleCurrentEmployeeNameChange = this.handleCurrentEmployeeNameChange.bind(this);
-        this.handleCalculateClick = this.handleCalculateClick.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleAddEmployeeClick = this.handleAddEmployeeClick.bind(this);
         this.handleEmployeeInSidebarClick = this.handleEmployeeInSidebarClick.bind(this);
         this.handleAddDependentClick = this.handleAddDependentClick.bind(this);
         this.handleDeleteDependentClick = this.handleDeleteDependentClick.bind(this);
         this.handleDeleteEmployeeClick = this.handleDeleteEmployeeClick.bind(this);
-        this.toggleShowEditEmployees = this.toggleShowEditEmployees.bind(this);
+        this.handleCalculateClick = this.handleCalculateClick.bind(this);
+        this.showEditEmployees = this.showEditEmployees.bind(this);
     }
 
-    toggleShowEditEmployees() {
+    showEditEmployees() {
         this.setState({
-            showEditEmployees: false
+            showEditEmployees: true
         })
     }
 
@@ -203,7 +204,8 @@ class App extends React.Component {
             .then(response => response.json())
             .then((data) => {
                 this.setState({
-                    costs: data
+                    costs: data,
+                    showEditEmployees: false
                 })
             })
             .catch(console.log)
@@ -236,69 +238,107 @@ class App extends React.Component {
         }
 
         if (this.state.showEditEmployees) {
+            return (
+                <div className="outerWrapper">
+                    <Header
+                        showEditEmployees={this.showEditEmployees}
+                        handleCalculateClick={this.handleCalculateClick}
+                    />
+                    <div className="innerWrapper">
+                        <Sidebar className="sidebar"
+                                 employees={this.state.employees}
+                                 handleAddEmployeeClick={this.handleAddEmployeeClick}
+                                 handleEmployeeInSidebarClick={this.handleEmployeeInSidebarClick}
+                                 handleSaveClick={this.handleSaveClick}
+                                 handleCalculateClick={this.handleCalculateClick}
+                        />
 
-        }
+                        {/*<div className="employeeDetails">*/}
+                        <div className="employeeDetails">
+                            <div className="employeeDetail">
+                                Employee
 
-        return (
-            <div className="wrapper">
-                <div className="header">
-                    <button className="largeButton" type="submit" onClick={this.toggleShowEditEmployees}>
-                        Edit Employees
-                    </button>
-                    <button className="largeButton" type="submit" onClick={this.handleCalculateClick}>
-                        Calculate Costs
-                    </button>
-                </div>
-                <Sidebar employees={this.state.employees}
-                         handleAddEmployeeClick={this.handleAddEmployeeClick}
-                         handleEmployeeInSidebarClick={this.handleEmployeeInSidebarClick}
-                         handleSaveClick={this.handleSaveClick}
-                         handleCalculateClick={this.handleCalculateClick}
-                />
+                                <div className="entry">
+                                    <input type="text"
+                                           value={this.state.employees[this.state.currentEmployeeIndex].name}
+                                           onChange={this.handleCurrentEmployeeNameChange}/>
+                                    <button className="button"
+                                            onClick={this.handleDeleteEmployeeClick}>
+                                        delete
+                                    </button>
+                                </div>
 
-                <div className="employeeDetails">
+                                Dependents
+                                <div className="dependents">
+                                    {this.state.employees[this.state.currentEmployeeIndex].dependents.map(dependent =>
+                                        <Dependent key={dependent.id}
+                                                   name={dependent.name}
+                                                   id={dependent.id}
+                                                   onChange={this.handleDependentChange}
+                                                   onDelete={this.handleDeleteDependentClick}
+                                        />
+                                    )}
+                                </div>
+                                <button className="largeButton" type="submit"
+                                        onClick={this.handleAddDependentClick}>Add Dependent
+                                </button>
+                            </div>
 
-                    <div className="employeeDetail">
-                        <div className="entry">
-                            <input type="text"
-                                   value={this.state.employees[this.state.currentEmployeeIndex].name}
-                                   onChange={this.handleCurrentEmployeeNameChange}/>
-                            <button className="button"
-                                    onClick={this.handleDeleteEmployeeClick}>
-                                delete
-                            </button>
                         </div>
-
-                        Dependents
-                        <div className="dependents">
-                            {this.state.employees[this.state.currentEmployeeIndex].dependents.map(dependent =>
-                                <Dependent key={dependent.id}
-                                           name={dependent.name}
-                                           id={dependent.id}
-                                           onChange={this.handleDependentChange}
-                                           onDelete={this.handleDeleteDependentClick}
-                                />
-                            )}
-                        </div>
-                        <button className="largeButton" type="submit"
-                                onClick={this.handleAddDependentClick}>Add Dependent
-                        </button>
                     </div>
 
-                </div>
 
-                <div>
-                    Annual Total Employee Salary Cost: {this.state.costs.annualTotalEmployeeSalaryCost}
                 </div>
-                <div>
-                    Annual Total Employee Deductions: {this.state.costs.annualTotalEmployeeDeductions}
-                </div>
-                <div>
-                    Annual Remaining Employee Salary: {this.state.costs.annualRemainingEmployeeSalary}
-                </div>
+            )
 
-            </div>
-        )
+        } else {
+            return (
+                <>
+                    <Header
+                        showEditEmployees={this.showEditEmployees}
+                        handleCalculateClick={this.handleCalculateClick}
+                    />
+
+                    <div className="costSummaryWrapper">
+                        <div className="summaryText">
+                            Annual Total Employee Salary Cost:
+                            <NumberFormat value={this.state.costs.annualTotalEmployeeSalaryCost} displayType={'text'}
+                                          thousandSeparator={true} prefix={'$'}>
+                            </NumberFormat>
+                        </div>
+                        <div className="summaryText">
+                            Annual Total Employee Deductions:
+                            <NumberFormat value={this.state.costs.annualTotalEmployeeDeductions} displayType={'text'}
+                                          thousandSeparator={true} prefix={'$'}>
+                            </NumberFormat>
+
+                        </div>
+                        <div className="summaryText">
+                            Annual Remaining Employee Salary:
+                            <NumberFormat value={this.state.costs.annualRemainingEmployeeSalary} displayType={'text'}
+                                          thousandSeparator={true} prefix={'$'}>
+                            </NumberFormat>
+                        </div>
+
+                        <div>
+                            Deductions Per Employee
+
+                            {this.state.costs.costsPerEmployee.map(employee =>
+                                <div>
+                                    Annual Total Employee Deductions for {employee.name}:
+                                    <NumberFormat value={employee.annualTotalEmployeeDeductions}
+                                                  displayType={'text'}
+                                                  thousandSeparator={true} prefix={'$'}>
+                                    </NumberFormat>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </>
+            )
+        }
+
+
     }
 }
 

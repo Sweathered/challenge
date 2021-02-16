@@ -1,7 +1,8 @@
 package com.challenge.controller;
 
-import com.challenge.models.Costs;
+import com.challenge.models.costs.Costs;
 import com.challenge.models.Employee;
+import com.challenge.service.CostService;
 import com.challenge.service.EmployeeService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,7 @@ import java.util.List;
 public class ChallengeController {
 
     public EmployeeService employeeService;
+    private CostService costService;
 
     @GetMapping("/employees")
     public List<Employee> getEmployees() {
@@ -29,6 +31,6 @@ public class ChallengeController {
 
     @PostMapping("/costs")
     public Costs getCosts(@RequestBody List<Employee> employees) {
-        return employeeService.calculateCosts(employees);
+        return costService.calculateCosts(employees);
     }
 }
