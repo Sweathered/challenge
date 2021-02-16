@@ -203,6 +203,9 @@ class App extends React.Component {
         fetch('http://localhost:8080/costs', requestOptions)
             .then(response => response.json())
             .then((data) => {
+                console.log("Data from costs: ");
+                console.log(data);
+
                 this.setState({
                     costs: data,
                     showEditEmployees: false

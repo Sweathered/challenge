@@ -1,21 +1,25 @@
 package com.challenge.models;
 
-import com.challenge.models.costs.Benefitable;
+import com.challenge.models.costs.DeductionCalculator;
+import com.challenge.models.costs.DependentDefaultDeductionCalculator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
+@Data
+@NoArgsConstructor
+public class Dependent {
+    private String name;
+    private int id;
+    @JsonIgnore
+    private DeductionCalculator deductionCalculator = new DependentDefaultDeductionCalculator();
 
-public class Dependent extends Benefitable {
-//    private String name;
-//    private int id;
-
-    @Override
-    public int getDeduction() {
-        return 500;
+    public Dependent(String name, int id) {
+        this.name = name;
+        this.id = id;
     }
 
-    public List<Dependent> getDependents() {
-        System.out.println("Dependents can't have dependents!");
-        return new ArrayList<>();
+    public void applyDiscounts() {
+        this.deductionCalculator = this.deductionCalculator.determineDeductionCalculators(this.getName(), this.getDeductionCalculator());
     }
 }

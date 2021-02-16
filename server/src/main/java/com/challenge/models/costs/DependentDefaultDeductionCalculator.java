@@ -1,6 +1,6 @@
 package com.challenge.models.costs;
 
-public class DependentCost extends Benefitable {
+public class DependentDefaultDeductionCalculator extends DeductionCalculator {
     @Override
     public int getDeduction() {
         return 500;

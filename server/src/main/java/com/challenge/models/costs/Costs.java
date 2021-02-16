@@ -1,5 +1,6 @@
 package com.challenge.models.costs;
 
+import com.challenge.models.Employee;
 import lombok.Data;
 
 import java.util.List;
@@ -9,5 +10,5 @@ public class Costs {
     private int annualTotalEmployeeSalaryCost;
     private int annualTotalEmployeeDeductions;
     private int annualRemainingEmployeeSalary;
-    private List<CostPerEmployee> costsPerEmployee;
+    private List<Employee> costsPerEmployee;
 }
