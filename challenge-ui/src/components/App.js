@@ -56,7 +56,6 @@ class App extends React.Component {
     }
 
     findEmployeeById(id) {
-        console.log("id : " + id);
         return this.state.employees.find(id);
     }
 
@@ -166,8 +165,6 @@ class App extends React.Component {
     handleEmployeeInSidebarClick(id) {
         const currentEmployeeIndex = this.findEmployeeIndex(id);
 
-        console.log("EmployeeInSidebar clicked" + currentEmployeeIndex);
-
         this.setState(state => ({
             currentEmployeeIndex: currentEmployeeIndex
         }));
@@ -203,9 +200,6 @@ class App extends React.Component {
         fetch('http://localhost:8080/costs', requestOptions)
             .then(response => response.json())
             .then((data) => {
-                console.log("Data from costs: ");
-                console.log(data);
-
                 this.setState({
                     costs: data,
                     showEditEmployees: false
@@ -327,8 +321,8 @@ class App extends React.Component {
                             Deductions Per Employee
 
                             {this.state.costs.costsPerEmployee.map(employee =>
-                                <div>
-                                    Annual Total Employee Deductions for {employee.name}:
+                                <div key={employee.id}>
+                                    {employee.name}:
                                     <NumberFormat value={employee.annualTotalEmployeeDeductions}
                                                   displayType={'text'}
                                                   thousandSeparator={true} prefix={'$'}>

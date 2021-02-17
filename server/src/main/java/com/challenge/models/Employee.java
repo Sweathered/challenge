@@ -3,8 +3,7 @@ package com.challenge.models;
 import com.challenge.models.costs.DeductionCalculator;
 import com.challenge.models.costs.EmployeeDefaultDeductionCalculator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +14,10 @@ public class Employee {
     private String name;
     private int id;
 
+    @Getter
+    @Setter(AccessLevel.NONE)
+    private int annualTotalEmployeeDeductions;
+
     @JsonIgnore
     private DeductionCalculator deductionCalculator = new EmployeeDefaultDeductionCalculator();
     private List<Dependent> dependents = new ArrayList<>();
@@ -24,16 +27,19 @@ public class Employee {
         this.id = id;
     }
 
+    public void addToAnnualTotalEmployeeDeductions(int amountToAdd) {
+        annualTotalEmployeeDeductions += amountToAdd;
+    }
+
     public void addDeductionsForSelf() {
-        this.deductionCalculator.addToAnnualTotalEmployeeDeductions(this.deductionCalculator.getDeduction());
+        this.addToAnnualTotalEmployeeDeductions(this.deductionCalculator.getDeduction());
     }
 
     public void addDeductionsForDependent(Dependent dependent) {
-        this.deductionCalculator.addToAnnualTotalEmployeeDeductions(dependent.getDeductionCalculator().getDeduction());
+        this.addToAnnualTotalEmployeeDeductions(dependent.getDeductionCalculator().getDeduction());
     }
 
     public void applyDiscounts() {
         this.deductionCalculator = this.deductionCalculator.determineDeductionCalculators(this.getName(), this.getDeductionCalculator());
     }
-
 }

@@ -29,7 +29,7 @@ public class CostService {
             }
         }
 
-        int annualTotalEmployeeDeductions = employees.stream().mapToInt(employee -> employee.getDeductionCalculator().getAnnualTotalEmployeeDeductions()).sum();
+        int annualTotalEmployeeDeductions = employees.stream().mapToInt(Employee::getAnnualTotalEmployeeDeductions).sum();
         int annualTotalEmployeeSalaryCost = employees.size() * EMPLOYEE_PAYCHECK_AMOUNT * PAYCHECKS_IN_YEAR;
 
         Costs costs = new Costs();

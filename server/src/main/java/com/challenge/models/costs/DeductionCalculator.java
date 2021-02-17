@@ -7,13 +7,8 @@ public abstract class DeductionCalculator {
 
     public abstract int getDeduction();
 
-    private int annualTotalEmployeeDeductions;
     private String name;
     private int id;
-
-    public void addToAnnualTotalEmployeeDeductions(int amountToAdd) {
-        annualTotalEmployeeDeductions += amountToAdd;
-    }
 
     public DeductionCalculator determineDeductionCalculators(String name, DeductionCalculator deductionCalculator) {
         if (name.toUpperCase().startsWith("A")) {
