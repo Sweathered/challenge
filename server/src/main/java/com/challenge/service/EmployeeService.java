@@ -1,42 +1,35 @@
 package com.challenge.service;
 
-import com.challenge.models.Dependent;
 import com.challenge.models.Employee;
+import com.challenge.repository.EmployeeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import javax.annotation.PostConstruct;
 import java.util.List;
 
 @Service
 public class EmployeeService {
-    private List<Employee> employees = defineSampleEmployees();
+    private List<Employee> employees;
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
+//    public EmployeeService() {
+//        this.employees = (List<Employee>) employeeRepository.findAll();
+//    }
+
+    @PostConstruct
+    public void setup(){
+        this.employees = (List<Employee>) employeeRepository.findAll();
+    }
 
     public List<Employee> getEmployees() {
         return employees;
     }
 
-    public List<Employee> defineSampleEmployees() {
-        employees = new ArrayList<>();
-        Employee employee = new Employee();
-        employee.setName("Michael Peters");
-        employee.setId(1);
-        employee.setDependents(defineDependents());
-        employees.add(employee);
-        return employees;
-    }
-
-    private List<Dependent> defineDependents() {
-        List<Dependent> dependents = new ArrayList<>();
-        Dependent dependent = new Dependent();
-        dependent.setName("Amy Peters");
-        dependent.setId(1);
-        dependents.add(dependent);
-        return dependents;
-    }
-
     public void saveEmployees(List<Employee> employees) {
         this.employees = employees;
+        employeeRepository.saveAll(employees);
     }
-
-
 }

@@ -5,21 +5,32 @@ import com.challenge.models.costs.EmployeeDefaultDeductionCalculator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @NoArgsConstructor
+@Entity
 public class Employee {
     private String name;
+
+    @Id
     private int id;
 
     @Getter
     @Setter(AccessLevel.NONE)
+    @Transient
     private int annualTotalEmployeeDeductions;
 
     @JsonIgnore
+    @Transient
     private DeductionCalculator deductionCalculator = new EmployeeDefaultDeductionCalculator();
+
+    @OneToMany
     private List<Dependent> dependents = new ArrayList<>();
 
     public Employee(String name, int id) {
