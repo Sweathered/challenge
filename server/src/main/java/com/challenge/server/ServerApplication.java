@@ -28,11 +28,4 @@ public class ServerApplication {
             }
         };
     }
-//
-//    @Bean
-//    public DataSource dataSource(){
-//        DataSourceProperties dataSourceProperties = new DataSourceProperties();
-//        dataSourceProperties.set
-//    }
-
 }

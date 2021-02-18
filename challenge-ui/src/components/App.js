@@ -24,7 +24,6 @@ class App extends React.Component {
 
         this.handleSaveClick = this.handleSaveClick.bind(this);
         this.handleCurrentEmployeeNameChange = this.handleCurrentEmployeeNameChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
         this.handleAddEmployeeClick = this.handleAddEmployeeClick.bind(this);
         this.handleEmployeeInSidebarClick = this.handleEmployeeInSidebarClick.bind(this);
         this.handleAddDependentClick = this.handleAddDependentClick.bind(this);
@@ -72,11 +71,6 @@ class App extends React.Component {
         this.setState({employees})
     }
 
-    handleSubmit(event) {
-        alert('An employee update was submitted' + this.state.currentEmployeeIndex);
-        event.preventDefault()
-    }
-
     getHighestId(entities) {
         let highestId = -1;
         for (const entity of entities) {
@@ -87,7 +81,6 @@ class App extends React.Component {
         return highestId;
     }
 
-    //Dependent functions
     handleDependentChange = (updatedName, dependentId) => {
         const updatedEmployees = this.state.employees;
 
@@ -109,7 +102,6 @@ class App extends React.Component {
     handleAddDependentClick = () => {
         const updatedEmployees = this.state.employees;
 
-        //get employee to update
         let employeeToUpdate = updatedEmployees[this.state.currentEmployeeIndex];
 
         let newId = this.getHighestId(employeeToUpdate.dependents) + 1;
@@ -122,7 +114,6 @@ class App extends React.Component {
             }
         ]
 
-        //update employee
         updatedEmployees[this.state.currentEmployeeIndex] = employeeToUpdate;
 
         this.setState(state => ({
@@ -161,7 +152,6 @@ class App extends React.Component {
         }
     }
 
-    //Sidebar functions
     handleEmployeeInSidebarClick(id) {
         const currentEmployeeIndex = this.findEmployeeIndex(id);
 
@@ -250,7 +240,6 @@ class App extends React.Component {
                                  handleCalculateClick={this.handleCalculateClick}
                         />
 
-                        {/*<div className="employeeDetails">*/}
                         <div className="employeeDetails">
                             <div className="employeeDetail">
                                 Employee

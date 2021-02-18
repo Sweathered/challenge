@@ -2,7 +2,8 @@
 
 ## Running the Project
 
-To run this project you should first start the Spring Boot server, followed by the React UI
+Assuming you have first set up the MYSQL database and have gotten the password, to run this project you should first
+start the Spring Boot server, followed by the React UI
 
 First, in the server project, you can start the server with the following command
 
@@ -15,6 +16,10 @@ Second, in the challenge-ui project directory, you can start the UI application 
 ### `npm start`
 
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+## Design
+
+![image](./images/sequence-diagram.jpg)
 
 ## SOLID Principles
 
@@ -51,7 +56,9 @@ from `DiscountDecorator` and can be substituted out with different discount deco
 ### I = Interface Segregation
 
 This principle is all about protecting clients from depending on methods that they don't use. Interfaces for a class
-should be small, resulting in high cohesion for objects and the classes they depend on.
+should be small, resulting in high cohesion for objects and the classes they depend on. An example of this is the
+repository pattern, and in this project `EmployeeRepository`. It only exposes a small set of methods that are only for a
+given table, rather than trying to keep all the methods to query all tables in a database in a single interface.
 
 ### D = Dependency Inversion
 

@@ -23,7 +23,6 @@ class Dependent extends React.Component {
     render() {
         return (
             <div className="entry">
-                {/*<input disabled={true} type="text" placeholder={props.name}/>*/}
                 <input type="text"
                        value={this.props.name}
                        onChange={this.handleChange}/>

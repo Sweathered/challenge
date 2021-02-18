@@ -5,10 +5,7 @@ import com.challenge.models.costs.EmployeeDefaultDeductionCalculator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +27,7 @@ public class Employee {
     @Transient
     private DeductionCalculator deductionCalculator = new EmployeeDefaultDeductionCalculator();
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "employee", cascade = CascadeType.ALL)
     private List<Dependent> dependents = new ArrayList<>();
 
     public Employee(String name, int id) {

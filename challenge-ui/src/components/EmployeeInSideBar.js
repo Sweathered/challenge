@@ -1,5 +1,4 @@
 import * as React from "react";
-import testData from "../testData";
 
 class EmployeeInSideBar extends React.Component {
     constructor(props) {
